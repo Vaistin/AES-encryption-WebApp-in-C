@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>AES enkripcija</title>
+</head>
+<body>
+    <h3>Izaberite da li šifrujete ili dešifrujete:</h3>
+    <form method='POST' action='' onsubmit="return validateForm()">
+        <input type='radio' name='enc' id='enc' value='1' checked='true'> enkripcija<br>
+        <input type='radio' name='enc' id='dec' value='0'> dekripcija<br><br>
+        <h3>Vaš tekst:</h3>
+        <textarea name='inputBox' id='inputBox' maxlength='256' required></textarea><br>
+        <h3>Vaš ključ:</h3>
+        <textarea name='keyBox' id='keyBox' maxlength='32' required></textarea><br>
+        <input type='submit' value='Pošalji'/>
+    </form>
+    <h3>Rezultat:</h3>
+    <textarea readonly id='outputBox'></textarea>
+    <style>
+        textarea{
+            width: 300px;
+            height: 50px;
+        }
+    </style>
+    <script>
+        function validateForm(){
+            const inputBox = document.getElementById('inputBox');
+            const keyBox = document.getElementById('keyBox');
+            if(keyBox.value.length != 16)
+            {
+                alert('Kljuc mora biti 16 karaktera.');
+                keyBox.focus();
+                return false;
+            }
+            const decrypt = document.getElementById('dec');
+            if(decrypt.checked)
+            {
+                if(inputBox.value.length % 32 != 0)
+                {
+                    alert('Za dešifrovanje, tekst mora biti deljiv sa 32.');
+                    inputBox.focus();
+                    return false;
+                }
+                const regex = /^[0-9a-fA-F]+$/;
+                if(inputBox.value.match(regex) == null)
+                {
+                    alert('Za dešifrovanje, vas tekst mogu biti samo heksadecimalne cifre. Od njih, slova mogu biti i velika i mala.');
+                    inputBox.focus();
+                    return false;
+                }
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>
